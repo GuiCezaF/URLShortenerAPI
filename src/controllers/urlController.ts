@@ -14,12 +14,12 @@ export class UrlController {
     }
 
     try {
-      const shortenedUrl = await urlService.createShortUrl(
+      const shortened_url = await urlService.createShortUrl(
         original_url,
         `${req.protocol}://${req.get('host')}`,
       );
-      logger.info('Url criada', shortenedUrl);
-      res.status(201).json({ shortenedUrl });
+      logger.info('Url criada', shortened_url);
+      res.status(201).json({ shortened_url });
     } catch (err) {
       logger.error(err);
       res.status(500).json({ message: 'Error creating short URL' });
