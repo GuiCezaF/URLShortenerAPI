@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { logger } from '../utils/logger';
 import { UrlService } from '../services/urlService';
+import { env } from '../env';
 
 const urlService = new UrlService();
 
@@ -31,15 +32,13 @@ export class UrlController {
 
     try {
       const originalUrl = await urlService.getOriginalUrl(hash);
-      if (originalUrl) {
-        res.redirect(originalUrl);
-        logger.info('Redirecionando para URL original', originalUrl);
-      } else {
-        res.status(404).json({ message: 'URL not found' });
-      }
+      res.redirect(originalUrl);
+      logger.info('Redirecting to original URL', originalUrl);
     } catch (err) {
-      logger.error(err);
-      res.status(500).json({ message: 'Error retrieving URL' });
+      logger.error('URL not found, redirecting to frontend home page', err);
+
+      const errorRedirectUrl = `${env.FRONTEND_URL}?error=URLNotFound`;
+      res.redirect(errorRedirectUrl);
     }
   }
 }

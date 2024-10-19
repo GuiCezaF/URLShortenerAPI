@@ -30,11 +30,10 @@ export class UrlService {
     return shortenedUrl;
   }
 
-  async getOriginalUrl(hash: string): Promise<string | null> {
+  async getOriginalUrl(hash: string): Promise<string> {
     const url = await prisma.url.findFirstOrThrow({
       where: { hash },
     });
-
-    return url ? url.originalUrl : null;
+    return url.originalUrl;
   }
 }

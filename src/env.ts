@@ -4,6 +4,7 @@ import { logger } from './utils/logger';
 const envSchema = z.object({
   APP_HOST: z.string(),
   APP_PORT: z.coerce.number().int(),
+  FRONTEND_URL: z.string().url(),
 });
 
 export const validate = envSchema.safeParse(process.env);
