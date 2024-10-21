@@ -1,13 +1,9 @@
-import crypto from 'crypto';
 import prisma from '../prisma/client';
+import { generateHash } from '../utils/generateHash';
 
 export class UrlService {
   async createShortUrl(originalUrl: string, baseUrl: string): Promise<string> {
-    const hash = crypto
-      .createHash('sha256')
-      .update(originalUrl)
-      .digest('hex')
-      .substring(0, 8);
+    const hash = generateHash(originalUrl).toString();
 
     const existingUrl = await prisma.url.findUnique({
       where: { hash },
