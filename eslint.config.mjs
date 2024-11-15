@@ -24,6 +24,7 @@ export default [
       'no-console': 'warn', 
       'prefer-const': 'error', 
       'no-var': 'error', 
+      "@typescript-eslint/no-unused-expressions": "off",
     },
   },
 ];
