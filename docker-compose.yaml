@@ -1,6 +1,22 @@
 services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: url_shortener_app
+    ports:
+      - "3333:3333"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+
   db:
     image: bitnami/postgresql:13.16.0
+    container_name: url_shortener_db
     ports:
       - '5432:5432'
     volumes:
@@ -9,7 +25,18 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=url_shortener
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -h 127.0.0.1 -d url_shortener"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   postgresql_data:
     driver: local
+
+networks:
+  app_network:
+    driver: bridge

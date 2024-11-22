@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { logger } from './utils/logger';
 
 const envSchema = z.object({
-  APP_HOST: z.string(),
   APP_PORT: z.coerce.number().int(),
   FRONTEND_URL: z.string().url(),
 });
